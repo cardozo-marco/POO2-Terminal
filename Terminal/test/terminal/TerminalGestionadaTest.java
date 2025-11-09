@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +27,6 @@ import maritimo.Buque;
 import maritimo.CircuitoMaritimo;
 import maritimo.Naviera;
 import maritimo.PosicionGPS;
-import maritimo.Terminal;
 import maritimo.TerminalPortuaria;
 import maritimo.Viaje;
 
@@ -42,7 +42,7 @@ public class TerminalGestionadaTest {
 	private Viaje mockViaje3;
 	private CircuitoMaritimo mockCircuito1;
 	private CircuitoMaritimo mockCircuito2;
-	private Terminal mockDestino;
+	private TerminalPortuaria mockDestino;
 	private Buque mockBuque;
 	
 	@BeforeEach
@@ -57,17 +57,17 @@ public class TerminalGestionadaTest {
 
 		mockCircuito1 = new CircuitoMaritimo(new ArrayList<>());
 		mockCircuito2 = new CircuitoMaritimo(new ArrayList<>());
-		mockDestino = mock(Terminal.class);
+		mockDestino = mock(TerminalPortuaria.class);
 
 		PosicionGPS pos = new PosicionGPS(0, 0);
 
 		CircuitoMaritimo dummyCircuito = new CircuitoMaritimo(new ArrayList<>());
-		Viaje dummyViaje = new Viaje(dummyCircuito, null, LocalDate.now());
-		Buque dummyBuque = new Buque(dummyViaje, pos);
-		mockViaje1 = new Viaje(dummyCircuito, dummyBuque, LocalDate.of(2025, 10, 15));
-		mockViaje2 = new Viaje(dummyCircuito, dummyBuque, LocalDate.of(2025, 10, 20));
-		mockViaje3 = new Viaje(dummyCircuito, dummyBuque, LocalDate.of(2025, 10, 25));
-		mockBuque = new Buque(mockViaje1, pos);
+		Viaje dummyViaje = new Viaje(dummyCircuito, null, LocalDateTime.now());
+		Buque dummyBuque = new Buque(dummyViaje, pos,"dummy");
+		mockViaje1 = new Viaje(dummyCircuito, dummyBuque, LocalDateTime.of(2025, 10, 15, 18, 10));
+		mockViaje2 = new Viaje(dummyCircuito, dummyBuque, LocalDateTime.of(2025, 10, 20, 19, 10));
+		mockViaje3 = new Viaje(dummyCircuito, dummyBuque, LocalDateTime.of(2025, 10, 25, 20, 10));
+		mockBuque = new Buque(mockViaje1, pos,"test");
 		
 		terminalGestionada = new TerminalGestionada(mockTerminal, mockCriterio);
 	}
@@ -89,8 +89,8 @@ public class TerminalGestionadaTest {
 		FiltroDeBusqueda mockFiltro = mock(FiltroDeBusqueda.class);
 
 		PosicionGPS posicion = new PosicionGPS(0, 0);
-		Buque buque1 = new Buque(mockViaje1, posicion);
-		Buque buque2 = new Buque(mockViaje2, posicion);
+		Buque buque1 = new Buque(mockViaje1, posicion,"test1");
+		Buque buque2 = new Buque(mockViaje2, posicion,"test2");
 		mockNaviera1.addBuque(buque1);
 		mockNaviera1.addBuque(buque2);
 		
@@ -110,11 +110,11 @@ public class TerminalGestionadaTest {
 		FiltroDeBusqueda mockFiltro = mock(FiltroDeBusqueda.class);
 
 		PosicionGPS posicion = new PosicionGPS(0, 0);
-		Buque buque1 = new Buque(mockViaje1, posicion);
+		Buque buque1 = new Buque(mockViaje1, posicion,"test1");
 		mockNaviera1.addBuque(buque1);
 
-		Buque buque2 = new Buque(mockViaje2, posicion);
-		Buque buque3 = new Buque(mockViaje3, posicion);
+		Buque buque2 = new Buque(mockViaje2, posicion,"test2");
+		Buque buque3 = new Buque(mockViaje3, posicion,"test3");
 		mockNaviera2.addBuque(buque2);
 		mockNaviera2.addBuque(buque3);
 		
@@ -137,9 +137,9 @@ public class TerminalGestionadaTest {
 		FiltroDeBusqueda mockFiltro = mock(FiltroDeBusqueda.class);
 
 		PosicionGPS posicion = new PosicionGPS(0, 0);
-		Buque buque1 = new Buque(mockViaje1, posicion);
-		Buque buque2 = new Buque(mockViaje2, posicion);
-		Buque buque3 = new Buque(mockViaje3, posicion);
+		Buque buque1 = new Buque(mockViaje1, posicion,"test1");
+		Buque buque2 = new Buque(mockViaje2, posicion,"test2");
+		Buque buque3 = new Buque(mockViaje3, posicion,"test3");
 		mockNaviera1.addBuque(buque1);
 		mockNaviera1.addBuque(buque2);
 		mockNaviera1.addBuque(buque3);
@@ -163,13 +163,13 @@ public class TerminalGestionadaTest {
 	@Test
 	public void testBuscarViajes_ConFiltroPuertoDestino_FiltraPorDestino() {
 
-		Terminal mockPuertoDestino = mock(Terminal.class);
+		TerminalPortuaria mockPuertoDestino = mock(TerminalPortuaria.class);
 		FiltroPuertoDestino filtro = new FiltroPuertoDestino(mockPuertoDestino);
 		
 
 		PosicionGPS posicion = new PosicionGPS(0, 0);
-		Buque buque1 = new Buque(mockViaje1, posicion);
-		Buque buque2 = new Buque(mockViaje2, posicion);
+		Buque buque1 = new Buque(mockViaje1, posicion,"test1");
+		Buque buque2 = new Buque(mockViaje2, posicion,"test2");
 		mockNaviera1.addBuque(buque1);
 		mockNaviera1.addBuque(buque2);
 		
@@ -188,12 +188,12 @@ public class TerminalGestionadaTest {
 		
 
 		PosicionGPS posicion = new PosicionGPS(0, 0);
-		Viaje viajeConFechaBuscada = new Viaje(mockCircuito1, mockBuque, fechaBuscada);
-		Viaje viajeConOtraFecha = new Viaje(mockCircuito1, mockBuque, LocalDate.of(2025, 10, 20));
+		Viaje viajeConFechaBuscada = new Viaje(mockCircuito1, mockBuque, fechaBuscada.atStartOfDay());
+		Viaje viajeConOtraFecha = new Viaje(mockCircuito1, mockBuque, LocalDateTime.of(2025, 10, 20,20,5));
 		
 
-		Buque buque1 = new Buque(viajeConFechaBuscada, posicion);
-		Buque buque2 = new Buque(viajeConOtraFecha, posicion);
+		Buque buque1 = new Buque(viajeConFechaBuscada, posicion,"test1");
+		Buque buque2 = new Buque(viajeConOtraFecha, posicion,"test2");
 		mockNaviera1.addBuque(buque1);
 		mockNaviera1.addBuque(buque2);
 		

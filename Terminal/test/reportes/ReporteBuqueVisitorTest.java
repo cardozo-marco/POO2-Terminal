@@ -11,8 +11,9 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import carga.*;
+import maritimo.Viaje;
 import ordenes.*;
-import paraPruebas.*;
+import terminal.TerminalGestionada;
 
 public class ReporteBuqueVisitorTest {
 	public ReporteBuqueVisitor reporte;

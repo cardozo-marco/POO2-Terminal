@@ -20,7 +20,7 @@ public class ReporteMuelleVisitor implements Visitor{
 
 	@Override
 	public void visit(TerminalGestionada terminal) {
-		for(Naviera naviera : terminal.getNavieras()) {
+		for(Naviera naviera : terminal.getNavierasRegistradas()) {
 			naviera.accept(this);
 		}
 		
@@ -78,7 +78,7 @@ public class ReporteMuelleVisitor implements Visitor{
 			int cantidad = this.cantidadDeContenedores.getOrDefault(viaje, 0);
 			this.reporte.append("Buque: ").append(buque.getNombre()).append("\n");
 			this.reporte.append("Fecha de partida: ").append(viaje.getFechaInicio()).append("\n");
-			this.reporte.append("Fecha de llegada: ").append(viaje.getFechaLlegadaA(this.terminal)).append("\n");
+			this.reporte.append("Fecha de llegada: ").append(viaje.getFechaLlegada(this.terminal.getTerminal())).append("\n");
 			this.reporte.append("Contenedores operados: ").append(cantidad).append("\n");
 		}
 		return reporte.toString();

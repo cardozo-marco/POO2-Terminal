@@ -10,8 +10,11 @@ import org.junit.jupiter.api.*;
 import org.mockito.invocation.*;
 import org.mockito.stubbing.*;
 
+import maritimo.Buque;
+import maritimo.Naviera;
+import maritimo.Viaje;
 import ordenes.*;
-import paraPruebas.*;
+import terminal.TerminalGestionada;
 
 public class ReporteMuelleVisitorTest {
 	public ReporteMuelleVisitor reporte;
@@ -38,7 +41,7 @@ public class ReporteMuelleVisitorTest {
 		mockViaje = mock(Viaje.class);
 		
 		navieras.add(mockNaviera);
-		when(mockTerminal.getNavieras()).thenReturn(navieras);
+		when(mockTerminal.getNavierasRegistradas()).thenReturn(navieras);
 		
 		ordenes.add(mockOrdenDeExportacion);
 		ordenes.add(mockOrdenDeImportacion);
@@ -55,7 +58,7 @@ public class ReporteMuelleVisitorTest {
 		when(mockOrdenDeExportacion.getViaje()).thenReturn(mockViaje);
 		
 		when(mockViaje.getFechaInicio()).thenReturn(LocalDateTime.of(2025, 11, 7, 12, 00));
-		when(mockViaje.getFechaLlegadaA(mockTerminal)).thenReturn(LocalDateTime.of(2025, 11, 20, 12, 00));
+		when(mockViaje.getFechaLlegada(mockTerminal.getTerminal())).thenReturn(LocalDateTime.of(2025, 11, 20, 12, 00));
 		
 		
 		//le indican al mockito que hacer cuando ivocan el accept

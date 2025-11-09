@@ -11,12 +11,14 @@ public class Buque  implements Visitable{
 	private PosicionGPS posicionActual;
 	private Viaje viajeAsignado;
 	private List<BuqueObserver> observers = new ArrayList<>();
+	private String nombre;
 
 	
-	Buque(Viaje viaje, PosicionGPS posicionInicial){
+	public Buque(Viaje viaje, PosicionGPS posicionInicial, String nombre){
 		this.posicionActual= posicionInicial;
 		this.faseActual = new Outbound();
 		this.viajeAsignado = viaje;
+		this.nombre = nombre;
 	}
 	
 	public void addObserver(BuqueObserver obs){
@@ -49,10 +51,6 @@ public class Buque  implements Visitable{
 	public void darOrdenDeTrabajo() {
 		this.getFaseActual().darOrdenDeTrabajo(this);
 	}
-	//TODO
-//	public void accept(Visitor visitor) {
-//		visitor.visitBuque(this);
-//	}
 
 	public Viaje getViajeAsignado() {
 		return viajeAsignado;
@@ -77,6 +75,11 @@ public class Buque  implements Visitable{
 	@Override
 	public void accept(Visitor visitante) {
 		visitante.visit(this);
+	}
+
+	public Object getNombre() {
+		
+		return this.nombre;
 	}
 
 

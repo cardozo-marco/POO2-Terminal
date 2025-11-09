@@ -4,9 +4,9 @@ import java.util.*;
 
 import carga.*;
 import maritimo.Buque;
+import maritimo.Naviera;
 import maritimo.Viaje;
 import ordenes.*;
-import paraPruebas.*;
 import terminal.TerminalGestionada;
 
 public class ReporteAduanaVisitor implements Visitor{
@@ -22,7 +22,7 @@ public class ReporteAduanaVisitor implements Visitor{
 
 	@Override
 	public void visit(TerminalGestionada terminal) {
-		for(Naviera naviera : terminal.getNavieras()) {
+		for(Naviera naviera : terminal.getNavierasRegistradas()) {
 			naviera.accept(this);
 		}
 		
@@ -85,7 +85,7 @@ public class ReporteAduanaVisitor implements Visitor{
 			Buque buque = this.buquesPorViaje.get(viaje);
 			this.reporte.append("<h1>Buque: ").append(buque.getNombre()).append("</h1>\n");
 			this.reporte.append("<p>Fecha de partida: ").append(viaje.getFechaInicio()).append("</p>\n");
-			this.reporte.append("<p>Fecha de arribo: ").append(viaje.getFechaLlegadaA(this.terminal)).append("</p>\n");
+			this.reporte.append("<p>Fecha de arribo: ").append(viaje.getFechaLlegada(this.terminal.getTerminal())).append("</p>\n");
 			this.reporte.append("<ul>\n");
 			
 			List<Container> contenedores = this.contenedoresPorViaje.get(viaje);

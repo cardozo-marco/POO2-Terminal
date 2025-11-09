@@ -23,7 +23,7 @@ class BuqueTest {
         faseMock = Mockito.mock(FaseBuque.class);
         observerMock = Mockito.mock(BuqueObserver.class);
         posicionInicial = new PosicionGPS(0, 0);
-        buque = new Buque(viajeMock, posicionInicial);
+        buque = new Buque(viajeMock, posicionInicial,"test");
     }
 
     @Test

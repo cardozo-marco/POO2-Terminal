@@ -12,8 +12,11 @@ import org.mockito.invocation.*;
 import org.mockito.stubbing.*;
 
 import carga.*;
+import maritimo.Buque;
+import maritimo.Naviera;
+import maritimo.Viaje;
 import ordenes.*;
-import paraPruebas.*;
+import terminal.TerminalGestionada;
 
 public class ReporteAduanaVisitorTest {
 	public ReporteAduanaVisitor reporte;
@@ -51,7 +54,7 @@ public class ReporteAduanaVisitorTest {
 		buques = new ArrayList<>();
 		
 		navieras.add(mockNaviera);
-		when(mockTerminal.getNavieras()).thenReturn(navieras);
+		when(mockTerminal.getNavierasRegistradas()).thenReturn(navieras);
 		ordenes.add(mockOrdenDeExportacion);
 		ordenes.add(mockOrdenDeImportacion);
 		when(mockTerminal.getOrdenes()).thenReturn(ordenes);
@@ -70,7 +73,7 @@ public class ReporteAduanaVisitorTest {
 		when(mockBuque.getNombre()).thenReturn("buque");
 		
 		when(mockViaje.getFechaInicio()).thenReturn(LocalDateTime.of(2025, 11, 7, 12, 00));
-		when(mockViaje.getFechaLlegadaA(mockTerminal)).thenReturn(LocalDateTime.of(2025, 11, 20, 12, 00));
+		when(mockViaje.getFechaLlegada(mockTerminal.getTerminal())).thenReturn(LocalDateTime.of(2025, 11, 20, 12, 00));
 		
 		when(mockDry.getId()).thenReturn("asdf1234567");
 		when(mockReefer.getId()).thenReturn("qwer9876543");

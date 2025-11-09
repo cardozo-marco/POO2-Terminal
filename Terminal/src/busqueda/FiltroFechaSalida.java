@@ -13,7 +13,7 @@ public class FiltroFechaSalida implements FiltroDeBusqueda {
 	
 	@Override
 	public boolean cumple(Viaje viaje) {
-		LocalDate fechaSalida = viaje.getFechaSalida();
+		LocalDate fechaSalida = viaje.getFechaInicio().toLocalDate();
 		return fechaSalida.equals(fecha);
 	}
 }

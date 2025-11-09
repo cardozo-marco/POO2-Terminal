@@ -26,10 +26,12 @@ import maritimo.Viaje;
 import ordenes.Orden;
 import ordenes.OrdenDeExportacion;
 import ordenes.OrdenDeImportacion;
+import reportes.Visitable;
+import reportes.Visitor;
 import servicios.Servicio;
 import servicios.ServicioAlmacenamientoExcedente;
 
-public class TerminalGestionada implements BuqueObserver {
+public class TerminalGestionada implements BuqueObserver, Visitable {
 	private CriterioDeBusqueda criterioBusqueda;
 	private TerminalPortuaria miTerminal;
 	private List<Naviera> navierasRegistradas;
@@ -349,5 +351,19 @@ public class TerminalGestionada implements BuqueObserver {
 		return viaje.getTerminalOrigen().equals(miTerminal) || 
 			   viaje.getTerminalDestino().equals(miTerminal);
 	}
+
+	public List<Naviera> getNavierasRegistradas() {
+		return navierasRegistradas;
+	}
+	
+	public List<Orden> getOrdenes() {
+		return ordenes;
+	}
+	
+	@Override
+	public void accept(Visitor visitante) {
+		visitante.visit(this);
+	}
+	
 }
 

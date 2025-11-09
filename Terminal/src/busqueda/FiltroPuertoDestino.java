@@ -12,7 +12,7 @@ public class FiltroPuertoDestino implements FiltroDeBusqueda {
 	
 	@Override
 	public boolean cumple(Viaje viaje) {
-		TerminalPortuaria destino = viaje.getPuertoDestino();
+		TerminalPortuaria destino = viaje.getTerminalDestino();
 		if (destino == null) {
 			return false;
 		}

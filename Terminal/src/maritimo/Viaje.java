@@ -65,5 +65,6 @@ public class Viaje {
 	public void setFechaInicio(LocalDateTime fechaInicio) {
 		this.fechaInicio = fechaInicio;
 	}
+
 	
 }

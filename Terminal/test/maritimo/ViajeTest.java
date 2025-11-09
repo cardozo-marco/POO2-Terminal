@@ -28,7 +28,7 @@ class ViajeTest {
         Tramo tramo2 = new Tramo(intermedio, destino, 800, 8);
 
         circuito = new CircuitoMaritimo(List.of(tramo1, tramo2));
-        buqueMock = new Buque(null, new PosicionGPS(0, 0));
+        buqueMock = new Buque(null, new PosicionGPS(0, 0),"test");
         fechaInicio = LocalDateTime.of(2025, 11, 5, 18, 0);
 
         viaje = new Viaje(circuito, buqueMock, fechaInicio);

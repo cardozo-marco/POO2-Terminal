@@ -22,13 +22,13 @@ public class FiltroFechaLlegada implements FiltroDeBusqueda {
 	@Override
 	public boolean cumple(Viaje viaje) {
 		if (puertoDestino != null) {
-			LocalDate fechaLlegada = viaje.getFechaLlegadaA((TerminalPortuaria) puertoDestino).toLocalDate();
+			LocalDate fechaLlegada = viaje.getFechaLlegada((TerminalPortuaria) puertoDestino).toLocalDate();
 			return fechaLlegada.equals(fecha);
 		}
 		
-		TerminalPortuaria destino = viaje.getPuertoDestino();
+		TerminalPortuaria destino = viaje.getTerminalDestino();
 		if (destino != null) {
-			LocalDate fechaLlegada = viaje.getFechaLlegadaA((TerminalPortuaria) destino).toLocalDate();
+			LocalDate fechaLlegada = viaje.getFechaLlegada((TerminalPortuaria) destino).toLocalDate();
 			return fechaLlegada.equals(fecha);
 		}
 		return false;
