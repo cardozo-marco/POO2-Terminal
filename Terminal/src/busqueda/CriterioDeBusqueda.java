@@ -2,10 +2,11 @@ package busqueda;
 
 import java.util.List;
 
+
 import maritimo.CircuitoMaritimo;
-import maritimo.Terminal;
+import maritimo.TerminalPortuaria;
 
 public interface CriterioDeBusqueda {
-	CircuitoMaritimo buscarCircuitos(List<CircuitoMaritimo> circuitos, Terminal origen, Terminal destino);
+	CircuitoMaritimo buscarCircuitos(List<CircuitoMaritimo> circuitos, TerminalPortuaria origen, TerminalPortuaria destino);
 }
 

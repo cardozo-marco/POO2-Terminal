@@ -9,5 +9,10 @@ public class Inbound implements FaseBuque {
             buque.setFase(new Arrived());
         }
     }
+    
+    @Override
+    public boolean esInbound() {
+    	return true;
+    }
 
 }

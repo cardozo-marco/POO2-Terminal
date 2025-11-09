@@ -4,7 +4,12 @@ import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import actores.Camion;
+import actores.Conductor;
+import actores.Shipper;
 import carga.*;
+import maritimo.TerminalPortuaria;
+import maritimo.Viaje;
 import paraPruebas.*;
 import reportes.*;
 
@@ -34,6 +39,11 @@ public class OrdenDeExportacion extends Orden implements Visitable{
 	@Override
 	public void accept(Visitor visitante) {
 		visitante.visit(this);
+	}
+	
+	@Override
+	public boolean esOrdenDeExportacion() {
+		return true;
 	}
 }
 

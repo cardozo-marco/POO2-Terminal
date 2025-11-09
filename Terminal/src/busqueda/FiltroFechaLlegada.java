@@ -2,20 +2,20 @@ package busqueda;
 
 import java.time.LocalDate;
 
-import maritimo.Terminal;
+
 import maritimo.TerminalPortuaria;
 import maritimo.Viaje;
 
 public class FiltroFechaLlegada implements FiltroDeBusqueda {
 	private LocalDate fecha;
-	private Terminal puertoDestino;
+	private TerminalPortuaria puertoDestino;
 	
 	public FiltroFechaLlegada(LocalDate fecha) {
 		this.fecha = fecha;
 		this.puertoDestino = null; 
 	}
 	
-	public void setPuertoDestino(Terminal puerto) {
+	public void setPuertoDestino(TerminalPortuaria puerto) {
 		this.puertoDestino = puerto;
 	}
 	
@@ -26,7 +26,7 @@ public class FiltroFechaLlegada implements FiltroDeBusqueda {
 			return fechaLlegada.equals(fecha);
 		}
 		
-		Terminal destino = viaje.getPuertoDestino();
+		TerminalPortuaria destino = viaje.getPuertoDestino();
 		if (destino != null) {
 			LocalDate fechaLlegada = viaje.getFechaLlegadaA((TerminalPortuaria) destino).toLocalDate();
 			return fechaLlegada.equals(fecha);

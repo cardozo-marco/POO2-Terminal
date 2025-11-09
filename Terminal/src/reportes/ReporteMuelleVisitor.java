@@ -3,6 +3,7 @@ package reportes;
 import java.util.*;
 
 import carga.*;
+import maritimo.Buque;
 import ordenes.*;
 import paraPruebas.*;
 

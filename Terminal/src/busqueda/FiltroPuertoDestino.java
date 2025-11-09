@@ -1,18 +1,18 @@
 package busqueda;
 
-import maritimo.Terminal;
+import maritimo.TerminalPortuaria;
 import maritimo.Viaje;
 
 public class FiltroPuertoDestino implements FiltroDeBusqueda {
-	private Terminal puertoDestino;
+	private TerminalPortuaria puertoDestino;
 	
-	public FiltroPuertoDestino(Terminal puerto) {
+	public FiltroPuertoDestino(TerminalPortuaria puerto) {
 		this.puertoDestino = puerto;
 	}
 	
 	@Override
 	public boolean cumple(Viaje viaje) {
-		Terminal destino = viaje.getPuertoDestino();
+		TerminalPortuaria destino = viaje.getPuertoDestino();
 		if (destino == null) {
 			return false;
 		}

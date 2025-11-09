@@ -2,8 +2,9 @@ package busqueda;
 
 import java.util.List;
 
+
 import maritimo.CircuitoMaritimo;
-import maritimo.Terminal;
+import maritimo.TerminalPortuaria;
 
 public class CriterioMenorTiempo implements CriterioDeBusqueda {
 	
@@ -11,7 +12,7 @@ public class CriterioMenorTiempo implements CriterioDeBusqueda {
 	}
 	
 	@Override
-	public CircuitoMaritimo buscarCircuitos(List<CircuitoMaritimo> circuitos, Terminal origen, Terminal destino) {
+	public CircuitoMaritimo buscarCircuitos(List<CircuitoMaritimo> circuitos, TerminalPortuaria origen, TerminalPortuaria destino) {
 		CircuitoMaritimo mejorCircuito = null;
 		double menorTiempo = Double.MAX_VALUE;
 		

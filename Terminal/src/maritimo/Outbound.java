@@ -11,4 +11,9 @@ public class Outbound implements FaseBuque {
             buque.setFase(new Inbound());
         }
     }
+    
+    @Override
+    public boolean esOutbound() {
+    	return true;
+    }
 }

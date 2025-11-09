@@ -2,6 +2,7 @@ package paraPruebas;
 
 import java.util.*;
 
+import maritimo.Buque;
 import reportes.*;
 
 public class Naviera implements Visitable{

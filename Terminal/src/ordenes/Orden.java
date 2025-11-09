@@ -4,7 +4,12 @@ import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import actores.Camion;
+import actores.Cliente;
+import actores.Conductor;
 import carga.*;
+import maritimo.TerminalPortuaria;
+import maritimo.Viaje;
 import paraPruebas.*;
 import reportes.*;
 import servicios.Servicio;
@@ -68,6 +73,26 @@ public abstract class Orden implements Visitable{
 	
 	public Viaje getViaje() {
 		return this.viaje;
+	}
+	
+	public Cliente getCliente() {
+		return this.cliente;
+	}
+	
+	public boolean esOrdenDeImportacion() {
+		return false;
+	}
+	
+	public boolean esOrdenDeExportacion() {
+		return false;
+	}
+	
+	public Camion getCamion() {
+		return this.camion;
+	}
+	
+	public Conductor getConductor() {
+		return this.conductor;
 	}
 	
 }
