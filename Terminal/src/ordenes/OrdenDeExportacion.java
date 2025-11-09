@@ -6,8 +6,9 @@ import java.util.List;
 
 import carga.*;
 import paraPruebas.*;
+import reportes.*;
 
-public class OrdenDeExportacion extends Orden{
+public class OrdenDeExportacion extends Orden implements Visitable{
 	private LocalDateTime turnoAsignado;
 	
 	public OrdenDeExportacion(Shipper shipper, Container carga, Viaje viaje, Camion camion, Conductor conductor,
@@ -28,6 +29,11 @@ public class OrdenDeExportacion extends Orden{
 		LocalDate fechaTurno = turnoAsignado.toLocalDate();
 		long cantidadDias = ChronoUnit.DAYS.between(fecha, fechaTurno);
 		return cantidadDias;
+	}
+
+	@Override
+	public void accept(Visitor visitante) {
+		visitante.visit(this);
 	}
 }
 

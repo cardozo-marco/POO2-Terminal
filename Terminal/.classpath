@@ -27,5 +27,6 @@
 	<classpathentry kind="lib" path="libs/byte-buddy-1.15.7.jar"/>
 	<classpathentry kind="lib" path="libs/mockito-core-5.14.2.jar"/>
 	<classpathentry kind="lib" path="libs/net.bytebuddy.byte-buddy-agent_1.15.7.jar"/>
+	<classpathentry kind="lib" path="libs/junit-platform-console-standalone-1.10.3.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

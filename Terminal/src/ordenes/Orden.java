@@ -6,9 +6,10 @@ import java.util.List;
 
 import carga.*;
 import paraPruebas.*;
+import reportes.*;
 import servicios.Servicio;
 
-public abstract class Orden {
+public abstract class Orden implements Visitable{
 	protected Cliente cliente;
 	
 	protected Container carga;
@@ -59,6 +60,14 @@ public abstract class Orden {
 	
 	public double getVolumen() {
 		return this.carga.getVolumen();
+	}
+	
+	public Container getContainer() {
+		return this.carga;
+	}
+	
+	public Viaje getViaje() {
+		return this.viaje;
 	}
 	
 }
