@@ -2,7 +2,6 @@ package ordenes;
 
 import java.time.*;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 import actores.Camion;
 import actores.Conductor;
@@ -10,7 +9,6 @@ import actores.Shipper;
 import carga.*;
 import maritimo.TerminalPortuaria;
 import maritimo.Viaje;
-import paraPruebas.*;
 import reportes.*;
 
 public class OrdenDeExportacion extends Orden implements Visitable{
@@ -33,7 +31,7 @@ public class OrdenDeExportacion extends Orden implements Visitable{
 	public double cantidadDeDias() {
 		LocalDate fechaTurno = turnoAsignado.toLocalDate();
 		long cantidadDias = ChronoUnit.DAYS.between(fecha, fechaTurno);
-		return cantidadDias;
+		return Math.abs(cantidadDias);
 	}
 
 	@Override

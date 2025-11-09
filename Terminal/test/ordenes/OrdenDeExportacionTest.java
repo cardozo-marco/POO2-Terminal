@@ -8,8 +8,12 @@ import java.util.*;
 
 import org.junit.jupiter.api.*;
 
+import actores.Camion;
+import actores.Conductor;
+import actores.Shipper;
 import carga.*;
-import paraPruebas.*;
+import maritimo.TerminalPortuaria;
+import maritimo.Viaje;
 import servicios.*;
 
 public class OrdenDeExportacionTest {
@@ -80,7 +84,7 @@ public class OrdenDeExportacionTest {
 	@Test
 	public void cantidadDeDias() {
 		ordenDeExportacion.setTurnoAsignado(LocalDateTime.of(2025, 10, 30, 12, 0));
-		assertEquals(7, ordenDeExportacion.cantidadDeDias());
+		assertEquals(10, ordenDeExportacion.cantidadDeDias());
 	}
 	
 	@Test

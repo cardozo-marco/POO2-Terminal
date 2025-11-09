@@ -2,7 +2,6 @@ package ordenes;
 
 import java.time.*;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
 
 import actores.Camion;
 import actores.Consignee;
@@ -10,7 +9,6 @@ import actores.Conductor;
 import carga.*;
 import maritimo.TerminalPortuaria;
 import maritimo.Viaje;
-import paraPruebas.*;
 import reportes.*;
 
 public class OrdenDeImportacion extends Orden implements Visitable{
@@ -19,7 +17,7 @@ public class OrdenDeImportacion extends Orden implements Visitable{
 	public OrdenDeImportacion(Consignee consignee, Container carga, Viaje viaje, Camion camion, Conductor conductor,
 			TerminalPortuaria terminal) {
 		super(consignee, carga, viaje, camion, conductor, terminal);
-		this.fechaLlegadaCarga = viaje.getFechaLlegadaA(terminal);
+		this.fechaLlegadaCarga = viaje.getFechaLlegada(terminal);
 	}
 	
 	public LocalDateTime getFechaLlegadaCarga() {
@@ -30,7 +28,7 @@ public class OrdenDeImportacion extends Orden implements Visitable{
 	public double cantidadDeDias() {
 		LocalDate fechaLlegada = this.fechaLlegadaCarga.toLocalDate();
 		long cantidadDias = ChronoUnit.DAYS.between(fecha, fechaLlegada);
-		return cantidadDias;
+		return Math.abs(cantidadDias);
 	}
 
 	@Override

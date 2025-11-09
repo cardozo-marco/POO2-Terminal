@@ -4,8 +4,10 @@ import java.util.*;
 
 import carga.*;
 import maritimo.Buque;
+import maritimo.Naviera;
+import maritimo.Viaje;
 import ordenes.*;
-import paraPruebas.*;
+import terminal.TerminalGestionada;
 
 public class ReporteMuelleVisitor implements Visitor{
 	private Map<Viaje, Buque> buquesPorViaje = new HashMap<>();

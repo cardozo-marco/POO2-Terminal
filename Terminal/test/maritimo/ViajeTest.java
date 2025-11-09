@@ -2,7 +2,7 @@ package maritimo;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +15,7 @@ class ViajeTest {
     private TerminalPortuaria origen;
     private TerminalPortuaria intermedio;
     private TerminalPortuaria destino;
-    private LocalDate fechaInicio;
+    private LocalDateTime fechaInicio;
     private Viaje viaje;
 
     @BeforeEach
@@ -29,7 +29,7 @@ class ViajeTest {
 
         circuito = new CircuitoMaritimo(List.of(tramo1, tramo2));
         buqueMock = new Buque(null, new PosicionGPS(0, 0));
-        fechaInicio = LocalDate.of(2025, 11, 5);
+        fechaInicio = LocalDateTime.of(2025, 11, 5, 18, 0);
 
         viaje = new Viaje(circuito, buqueMock, fechaInicio);
     }

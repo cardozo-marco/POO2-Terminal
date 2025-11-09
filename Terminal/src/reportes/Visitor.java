@@ -1,8 +1,10 @@
 package reportes;
 
 import carga.*;
+import maritimo.Buque;
+import maritimo.Naviera;
 import ordenes.*;
-import paraPruebas.*;
+import terminal.TerminalGestionada;
 
 public interface Visitor {
 	public void visit(TerminalGestionada terminal);

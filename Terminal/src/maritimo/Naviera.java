@@ -3,7 +3,10 @@ package maritimo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Naviera {
+import reportes.Visitable;
+import reportes.Visitor;
+
+public class Naviera implements Visitable {
 	
 	private List <CircuitoMaritimo> circuitos;
 	private List <Buque> buques;
@@ -27,6 +30,11 @@ public class Naviera {
 	
 	public List<CircuitoMaritimo> getCircuitos() {
 		return circuitos;
+	}
+	
+	@Override
+	public void accept(Visitor visitante) {
+		visitante.visit(this);
 	}
 	
 }

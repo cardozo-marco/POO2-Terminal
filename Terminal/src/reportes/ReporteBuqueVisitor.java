@@ -3,8 +3,11 @@ package reportes;
 import java.util.*;
 
 import carga.*;
+import maritimo.Buque;
+import maritimo.Naviera;
+import maritimo.Viaje;
 import ordenes.*;
-import paraPruebas.*;
+import terminal.TerminalGestionada;
 
 public class ReporteBuqueVisitor implements Visitor{
 	private Map<Viaje, List<String>> idsCargados = new HashMap<>();

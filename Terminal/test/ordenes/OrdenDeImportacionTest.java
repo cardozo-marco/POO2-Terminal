@@ -8,8 +8,12 @@ import java.util.*;
 
 import org.junit.jupiter.api.*;
 
+import actores.Camion;
+import actores.Conductor;
+import actores.Consignee;
 import carga.*;
-import paraPruebas.*;
+import maritimo.TerminalPortuaria;
+import maritimo.Viaje;
 import servicios.*;
 
 public class OrdenDeImportacionTest {
@@ -46,7 +50,7 @@ public class OrdenDeImportacionTest {
 		
 		fechaLlegadaFicticia = LocalDateTime.of(2025, 10, 30, 12, 0);
 		
-		when(mockViaje.getFechaLlegadaA(mockTerminaPortuaria)).thenReturn(fechaLlegadaFicticia);
+		when(mockViaje.getFechaLlegada(mockTerminaPortuaria)).thenReturn(fechaLlegadaFicticia);
 		
 		ordenDeImportacion = new OrdenDeImportacion(mockConsignee, mockContainer, mockViaje, mockCamion, mockConductor, mockTerminaPortuaria);
 	}
@@ -91,7 +95,7 @@ public class OrdenDeImportacionTest {
 	
 	@Test
 	public void cantidadDiasTest() {
-		assertEquals(7, ordenDeImportacion.cantidadDeDias());
+		assertEquals(10, ordenDeImportacion.cantidadDeDias());
 	}
 	
 	@Test

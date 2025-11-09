@@ -3,7 +3,10 @@ package maritimo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Buque {
+import reportes.Visitable;
+import reportes.Visitor;
+
+public class Buque  implements Visitable{
 	private FaseBuque faseActual;
 	private PosicionGPS posicionActual;
 	private Viaje viajeAsignado;
@@ -70,5 +73,11 @@ public class Buque {
 	public List<BuqueObserver> getObservers() {
 		return observers;
 	}
+
+	@Override
+	public void accept(Visitor visitante) {
+		visitante.visit(this);
+	}
+
 
 }
