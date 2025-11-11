@@ -94,5 +94,23 @@ class CircuitoMaritimoTest {
 
         assertTrue(intermedias.isEmpty());
     }
+    
+    @Test
+    void cantidadTerminalesEntreCuentaCorrectamente() {
+        int cantidad = circuito.cantidadTerminalesEntre(origen, destino);
+        assertEquals(1, cantidad);
+    }
+    
+    @Test
+    void precioEntreTerminalesSumaCorrectamente() {
+        double precio = circuito.precioEntreTerminales(origen, destino);
+        assertEquals(300.0, precio);
+    }
+
+    @Test
+    void tiempoEntreTerminalesSumaCorrectamente() {
+        double tiempo = circuito.tiempoEntreTerminales(origen, destino);
+        assertEquals(30.0, tiempo);
+    }
 
 }

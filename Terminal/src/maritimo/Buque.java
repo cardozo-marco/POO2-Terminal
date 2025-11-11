@@ -77,7 +77,7 @@ public class Buque  implements Visitable{
 		visitante.visit(this);
 	}
 
-	public Object getNombre() {
+	public String getNombre() {
 		
 		return this.nombre;
 	}
