@@ -53,6 +53,7 @@ public class OrdenDeImportacionTest {
 		when(mockViaje.getFechaLlegada(mockTerminaPortuaria)).thenReturn(fechaLlegadaFicticia);
 		
 		ordenDeImportacion = new OrdenDeImportacion(mockConsignee, mockContainer, mockViaje, mockCamion, mockConductor, mockTerminaPortuaria);
+		ordenDeImportacion.setFecha(LocalDate.of(2025, 10, 20));
 	}
 	
 	@Test

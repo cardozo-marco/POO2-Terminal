@@ -94,4 +94,8 @@ public abstract class Orden implements Visitable{
 		return this.conductor;
 	}
 	
+	public void setFecha(LocalDate fecha) {
+		this.fecha = fecha;
+	}
+	
 }

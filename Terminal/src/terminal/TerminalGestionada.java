@@ -200,13 +200,15 @@ public class TerminalGestionada implements BuqueObserver, Visitable {
 		// - Fase Outbound (después de Departing): enviar facturas
 		
 		// Si el buque entró en fase Inbound y está llegando a esta terminal como destino
-		if (buque.getFaseActual().esInbound() && viaje.getTerminalDestino().equals(miTerminal)) {
+		TerminalPortuaria destino = viaje.getTerminalDestino();
+		if (buque.getFaseActual().esInbound() && destino != null && destino.equals(miTerminal)) {
 			// Notificar a los consignees (importadores) que su carga está llegando
 			notificarConsigneesLlegada(viaje);
 		}
 		
 		// Si el buque entró en fase Departing y salió desde esta terminal como origen
-		if (buque.getFaseActual().esDeparting() && viaje.getTerminalOrigen().equals(miTerminal)) {
+		TerminalPortuaria origen = viaje.getTerminalOrigen();
+		if (buque.getFaseActual().esDeparting() && origen != null && origen.equals(miTerminal)) {
 			// Notificar a los shippers (exportadores) que su carga ya ha salido
 			notificarShippersSalida(viaje);
 		}
@@ -220,11 +222,11 @@ public class TerminalGestionada implements BuqueObserver, Visitable {
 			// Si está a más de 1km, significa que viene de Departing (se retiró de la terminal)
 			if (distancia > 1.0) {
 				// Verificar si salió desde esta terminal (exportación) o llegó a esta terminal (importación)
-				if (viaje.getTerminalOrigen().equals(miTerminal)) {
+				if (origen != null && origen.equals(miTerminal)) {
 					// Exportación: facturar servicios al shipper
 					facturarOrdenesExportacion(viaje);
 				}
-				if (viaje.getTerminalDestino().equals(miTerminal)) {
+				if (destino != null && destino.equals(miTerminal)) {
 					// Importación: facturar servicios + viaje al consignee
 					facturarOrdenesImportacion(viaje);
 				}
@@ -322,6 +324,10 @@ public class TerminalGestionada implements BuqueObserver, Visitable {
 		TerminalPortuaria origen = viaje.getTerminalOrigen();
 		TerminalPortuaria destino = viaje.getTerminalDestino();
 		
+		if (origen == null || destino == null || circuito == null) {
+			return 0.0;
+		}
+		
 		double precioTotal = 0.0;
 		boolean empezarSumar = false;
 		
@@ -348,8 +354,12 @@ public class TerminalGestionada implements BuqueObserver, Visitable {
 		if (viaje == null) {
 			return false;
 		}
-		return viaje.getTerminalOrigen().equals(miTerminal) || 
-			   viaje.getTerminalDestino().equals(miTerminal);
+		TerminalPortuaria origen = viaje.getTerminalOrigen();
+		TerminalPortuaria destino = viaje.getTerminalDestino();
+		if (origen == null || destino == null) {
+			return false;
+		}
+		return origen.equals(miTerminal) || destino.equals(miTerminal);
 	}
 
 	public List<Naviera> getNavierasRegistradas() {

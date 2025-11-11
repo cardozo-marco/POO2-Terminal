@@ -83,6 +83,7 @@ public class OrdenDeExportacionTest {
 	
 	@Test
 	public void cantidadDeDias() {
+		ordenDeExportacion.setFecha(LocalDate.of(2025, 10, 20));
 		ordenDeExportacion.setTurnoAsignado(LocalDateTime.of(2025, 10, 30, 12, 0));
 		assertEquals(10, ordenDeExportacion.cantidadDeDias());
 	}

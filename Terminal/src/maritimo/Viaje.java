@@ -38,11 +38,18 @@ public class Viaje {
 	}
 	
 	public TerminalPortuaria getTerminalOrigen() {
-	    return circuito.getTramos().get(0).getOrigen();
+		List<Tramo> tramos = circuito.getTramos();
+		if (tramos == null || tramos.isEmpty()) {
+			return null;
+		}
+	    return tramos.get(0).getOrigen();
 	}
 
 	public TerminalPortuaria getTerminalDestino() {
 		List<Tramo> tramos = circuito.getTramos();
+		if (tramos == null || tramos.isEmpty()) {
+			return null;
+		}
 	    return tramos.get(tramos.size() - 1).getDestino();
 	}
 
