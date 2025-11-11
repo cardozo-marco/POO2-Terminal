@@ -83,6 +83,7 @@ public class OrdenDeExportacionTest {
 	
 	@Test
 	public void cantidadDeDias() {
+		// Set fecha to 10 days before turno date for testing
 		ordenDeExportacion.setFecha(LocalDate.of(2025, 10, 20));
 		ordenDeExportacion.setTurnoAsignado(LocalDateTime.of(2025, 10, 30, 12, 0));
 		assertEquals(10, ordenDeExportacion.cantidadDeDias());
@@ -92,5 +93,40 @@ public class OrdenDeExportacionTest {
 	public void getVolumenTest() {
 		when(mockContainer.getVolumen()).thenReturn(80.0);
 		assertEquals(80.0, ordenDeExportacion.getVolumen());
+	}
+	
+	@Test
+	public void getContainerTest() {
+		assertEquals(mockContainer, ordenDeExportacion.getContainer());
+	}
+	
+	@Test
+	public void getViajeTest() {
+		assertEquals(mockViaje, ordenDeExportacion.getViaje());
+	}
+	
+	@Test
+	public void getClienteTest() {
+		assertEquals(mockShipper, ordenDeExportacion.getCliente());
+	}
+	
+	@Test
+	public void getCamionTest() {
+		assertEquals(mockCamion, ordenDeExportacion.getCamion());
+	}
+	
+	@Test
+	public void getConductorTest() {
+		assertEquals(mockConductor, ordenDeExportacion.getConductor());
+	}
+	
+	@Test
+	public void esOrdenDeExportacionTest() {
+		assertTrue(ordenDeExportacion.esOrdenDeExportacion());
+	}
+	
+	@Test
+	public void esOrdenDeImportacionTest() {
+		assertFalse(ordenDeExportacion.esOrdenDeImportacion());
 	}
 }

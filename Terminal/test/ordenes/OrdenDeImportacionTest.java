@@ -53,6 +53,7 @@ public class OrdenDeImportacionTest {
 		when(mockViaje.getFechaLlegada(mockTerminaPortuaria)).thenReturn(fechaLlegadaFicticia);
 		
 		ordenDeImportacion = new OrdenDeImportacion(mockConsignee, mockContainer, mockViaje, mockCamion, mockConductor, mockTerminaPortuaria);
+		// Set fecha to 10 days before arrival date for testing
 		ordenDeImportacion.setFecha(LocalDate.of(2025, 10, 20));
 	}
 	
@@ -103,6 +104,41 @@ public class OrdenDeImportacionTest {
 	public void getVolumenTest() {
 		when(mockContainer.getVolumen()).thenReturn(80.0);
 		assertEquals(80.0, ordenDeImportacion.getVolumen());
+	}
+	
+	@Test
+	public void getContainerTest() {
+		assertEquals(mockContainer, ordenDeImportacion.getContainer());
+	}
+	
+	@Test
+	public void getViajeTest() {
+		assertEquals(mockViaje, ordenDeImportacion.getViaje());
+	}
+	
+	@Test
+	public void getClienteTest() {
+		assertEquals(mockConsignee, ordenDeImportacion.getCliente());
+	}
+	
+	@Test
+	public void getCamionTest() {
+		assertEquals(mockCamion, ordenDeImportacion.getCamion());
+	}
+	
+	@Test
+	public void getConductorTest() {
+		assertEquals(mockConductor, ordenDeImportacion.getConductor());
+	}
+	
+	@Test
+	public void esOrdenDeImportacionTest() {
+		assertTrue(ordenDeImportacion.esOrdenDeImportacion());
+	}
+	
+	@Test
+	public void esOrdenDeExportacionTest() {
+		assertFalse(ordenDeImportacion.esOrdenDeExportacion());
 	}
 }
 
