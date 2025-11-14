@@ -1,11 +1,11 @@
-package actores;
+package entidades;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import facturacion.Factura;
 
-public abstract class Cliente {
+public class Cliente {
 	protected String nombre;
 	protected String email;
 	private List<String> notificacionesRecibidas;

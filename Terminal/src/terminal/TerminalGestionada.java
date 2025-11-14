@@ -6,12 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import actores.Camion;
-import actores.Cliente;
-import actores.Conductor;
-import actores.EmpresaTransportista;
-import actores.Consignee;
-import actores.Shipper;
+import entidades.Camion;
+import entidades.Cliente;
+import entidades.Conductor;
+import entidades.EmpresaTransportista;
 import busqueda.CriterioDeBusqueda;
 import busqueda.FiltroDeBusqueda;
 import carga.Container;
@@ -68,64 +66,40 @@ public class TerminalGestionada implements BuqueObserver, Visitable {
 		this.transportistasRegistrados.add(empresa);
 	}
 	
-	public OrdenDeExportacion crearOrdenExportacion(Shipper shipper, Viaje viaje, Container carga, 
+	public OrdenDeExportacion crearOrdenExportacion(Cliente cliente, Viaje viaje, Container carga, 
 			Camion camion, Conductor conductor) {
-		OrdenDeExportacion orden = new OrdenDeExportacion(shipper, carga, viaje, camion, conductor, miTerminal);
+		OrdenDeExportacion orden = new OrdenDeExportacion(cliente, carga, viaje, camion, conductor, miTerminal);
 		this.ordenes.add(orden);
 		return orden;
 	}
 	
-	public OrdenDeImportacion crearOrdenImportacion(Consignee consignee, Viaje viaje, Container carga, 
+	public OrdenDeImportacion crearOrdenImportacion(Cliente cliente, Viaje viaje, Container carga, 
 			Camion camion, Conductor conductor) {
-		OrdenDeImportacion orden = new OrdenDeImportacion(consignee, carga, viaje, camion, conductor, miTerminal);
+		OrdenDeImportacion orden = new OrdenDeImportacion(cliente, carga, viaje, camion, conductor, miTerminal);
 		this.ordenes.add(orden);
 		
-		// Según la documentación: enviar mail al consignee con fecha y hora de llegada
+		// Según la documentación: enviar mail al cliente con fecha y hora de llegada
 		LocalDateTime fechaLlegada = orden.getFechaLlegadaCarga();
 		String mensaje = String.format("Su carga llegará a la terminal %s el %s a las %s.", 
 			miTerminal.toString(), 
 			fechaLlegada.toLocalDate().toString(),
 			fechaLlegada.toLocalTime().toString());
-		consignee.notificarLlegadaBuque(mensaje);
+		cliente.notificarLlegadaBuque(mensaje);
 		
 		return orden;
 	}
 	
 	public void recibirCamionExportacion(Camion camion, Conductor conductor, OrdenDeExportacion orden) {
-		// Validar que el camion y conductor estén registrados
-		boolean camionRegistrado = transportistasRegistrados.stream()
-			.anyMatch(empresa -> empresa.getCamiones().contains(camion));
-		boolean conductorRegistrado = transportistasRegistrados.stream()
-			.anyMatch(empresa -> empresa.getConductores().contains(conductor));
-		
-		if (!camionRegistrado || !conductorRegistrado) {
-			throw new RuntimeException("Camion o conductor no registrado");
-		}
-		
-		// Según la documentación: verificar que camión y chofer sean los informados por el shipper
-		if (!orden.getCamion().equals(camion) || !orden.getConductor().equals(conductor)) {
-			throw new RuntimeException("El camion o conductor no coinciden con los informados en la orden");
-		}
+		validarCamionYConductorRegistrados(camion, conductor);
+		validarCamionYConductorCoincidenConOrden(camion, conductor, orden);
 		
 		// Según la documentación: se registra la carga en el puerto
 		// La carga queda almacenada a la espera de la llegada del buque
 	}
 	
 	public void recibirCamionImportacion(Camion camion, Conductor conductor, OrdenDeImportacion orden) {
-		// Validar que el camion y conductor estén registrados
-		boolean camionRegistrado = transportistasRegistrados.stream()
-			.anyMatch(empresa -> empresa.getCamiones().contains(camion));
-		boolean conductorRegistrado = transportistasRegistrados.stream()
-			.anyMatch(empresa -> empresa.getConductores().contains(conductor));
-		
-		if (!camionRegistrado || !conductorRegistrado) {
-			throw new RuntimeException("Camion o conductor no registrado");
-		}
-		
-		// Según la documentación: verificar que camión y chofer sean los autorizados por el consignee
-		if (!orden.getCamion().equals(camion) || !orden.getConductor().equals(conductor)) {
-			throw new RuntimeException("El camion o conductor no coinciden con los autorizados en la orden");
-		}
+		validarCamionYConductorRegistrados(camion, conductor);
+		validarCamionYConductorCoincidenConOrden(camion, conductor, orden);
 		
 		// Según la documentación: verificar margen de tolerancia de 24 horas
 		LocalDateTime fechaLlegada = orden.getFechaLlegadaCarga();
@@ -149,33 +123,42 @@ public class TerminalGestionada implements BuqueObserver, Visitable {
 		// El camión se lleva la carga y la terminal registra el retiro
 	}
 	
-	public List<Viaje> buscarViajes(FiltroDeBusqueda filtro) {
-		List<Viaje> todosLosViajes = new ArrayList<>();
+	/**
+	 * Valida que el camión y conductor estén registrados en alguna empresa transportista
+	 */
+	private void validarCamionYConductorRegistrados(Camion camion, Conductor conductor) {
+		boolean camionRegistrado = transportistasRegistrados.stream()
+			.anyMatch(empresa -> empresa.getCamiones().contains(camion));
+		boolean conductorRegistrado = transportistasRegistrados.stream()
+			.anyMatch(empresa -> empresa.getConductores().contains(conductor));
 		
-		// Obtener todos los viajes de todas las navieras registradas
-		// Los viajes se obtienen de los buques de cada naviera
-		for (Naviera naviera : navierasRegistradas) {
-			for (Buque buque : naviera.getBuques()) {
-				Viaje viaje = buque.getViajeAsignado();
-				if (viaje != null) {
-					todosLosViajes.add(viaje);
-				}
-			}
+		if (!camionRegistrado || !conductorRegistrado) {
+			throw new RuntimeException("Camion o conductor no registrado");
 		}
-		
-		// Filtrar según el criterio
-		return todosLosViajes.stream()
-			.filter(viaje -> filtro.cumple(viaje))
+	}
+	
+	/**
+	 * Valida que el camión y conductor coincidan con los de la orden
+	 */
+	private void validarCamionYConductorCoincidenConOrden(Camion camion, Conductor conductor, Orden orden) {
+		if (!orden.getCamion().equals(camion) || !orden.getConductor().equals(conductor)) {
+			throw new RuntimeException("El camion o conductor no coinciden con los informados en la orden");
+		}
+	}
+	
+	public List<Viaje> buscarViajes(FiltroDeBusqueda filtro) {
+		return navierasRegistradas.stream()
+			.flatMap(naviera -> naviera.getBuques().stream())
+			.map(Buque::getViajeAsignado)
+			.filter(viaje -> viaje != null)
+			.filter(filtro::cumple)
 			.collect(Collectors.toList());
 	}
 	
 	public CircuitoMaritimo mejorCircuitoHacia(TerminalPortuaria destino) {
-		List<CircuitoMaritimo> todosLosCircuitos = new ArrayList<>();
-		
-		// Obtener todos los circuitos de todas las navieras registradas
-		for (Naviera naviera : navierasRegistradas) {
-			todosLosCircuitos.addAll(naviera.getCircuitos());
-		}
+		List<CircuitoMaritimo> todosLosCircuitos = navierasRegistradas.stream()
+			.flatMap(naviera -> naviera.getCircuitos().stream())
+			.collect(Collectors.toList());
 		
 		// Usar el criterio de búsqueda para encontrar el mejor circuito
 		return criterioBusqueda.buscarCircuitos(todosLosCircuitos, miTerminal, destino);
@@ -239,14 +222,14 @@ public class TerminalGestionada implements BuqueObserver, Visitable {
 	 * (cuando el buque entra en fase Inbound)
 	 */
 	private void notificarConsigneesLlegada(Viaje viaje) {
-		for (Orden orden : ordenes) {
-			if (orden.esOrdenDeImportacion() && orden.getViaje().equals(viaje)) {
-				Consignee consignee = (Consignee) orden.getCliente();
-				String mensaje = String.format("Su carga está llegando a la terminal %s. El buque se encuentra a menos de 50 km.", 
-					miTerminal.toString());
-				consignee.notificarLlegadaBuque(mensaje);
-			}
-		}
+		String mensaje = String.format("Su carga está llegando a la terminal %s. El buque se encuentra a menos de 50 km.", 
+			miTerminal.toString());
+		
+		ordenes.stream()
+			.filter(Orden::esOrdenDeImportacion)
+			.filter(orden -> orden.getViaje().equals(viaje))
+			.map(Orden::getCliente)
+			.forEach(cliente -> cliente.notificarLlegadaBuque(mensaje));
 	}
 	
 	/**
@@ -254,14 +237,14 @@ public class TerminalGestionada implements BuqueObserver, Visitable {
 	 * (cuando el buque entra en fase Departing)
 	 */
 	private void notificarShippersSalida(Viaje viaje) {
-		for (Orden orden : ordenes) {
-			if (orden.esOrdenDeExportacion() && orden.getViaje().equals(viaje)) {
-				Shipper shipper = (Shipper) orden.getCliente();
-				String mensaje = String.format("Su carga ya ha salido de la terminal %s en el buque.", 
-					miTerminal.toString());
-				shipper.notificarLlegadaBuque(mensaje);
-			}
-		}
+		String mensaje = String.format("Su carga ya ha salido de la terminal %s en el buque.", 
+			miTerminal.toString());
+		
+		ordenes.stream()
+			.filter(Orden::esOrdenDeExportacion)
+			.filter(orden -> orden.getViaje().equals(viaje))
+			.map(Orden::getCliente)
+			.forEach(cliente -> cliente.notificarLlegadaBuque(mensaje));
 	}
 	
 	public TerminalPortuaria getTerminal() {
@@ -273,32 +256,30 @@ public class TerminalGestionada implements BuqueObserver, Visitable {
 	 * Factura servicios al shipper
 	 */
 	private void facturarOrdenesExportacion(Viaje viaje) {
-		for (Orden orden : ordenes) {
-			if (orden.esOrdenDeExportacion() && orden.getViaje().equals(viaje)) {
-				Shipper shipper = (Shipper) orden.getCliente();
+		ordenes.stream()
+			.filter(Orden::esOrdenDeExportacion)
+			.filter(orden -> orden.getViaje().equals(viaje))
+			.forEach(orden -> {
 				Factura factura = generarFacturaServicios(orden);
-				shipper.enviarFactura(factura);
-			}
-		}
+				orden.getCliente().enviarFactura(factura);
+			});
 	}
 	
 	/**
 	 * Factura las órdenes de importación cuando el buque pasa a Outbound
-	 * Factura servicios + costo del viaje al consignee
+	 * Factura servicios + costo del viaje al cliente
 	 */
 	private void facturarOrdenesImportacion(Viaje viaje) {
-		for (Orden orden : ordenes) {
-			if (orden.esOrdenDeImportacion() && orden.getViaje().equals(viaje)) {
-				Consignee consignee = (Consignee) orden.getCliente();
+		double precioViaje = calcularPrecioViaje(viaje);
+		
+		ordenes.stream()
+			.filter(Orden::esOrdenDeImportacion)
+			.filter(orden -> orden.getViaje().equals(viaje))
+			.forEach(orden -> {
 				Factura factura = generarFacturaServicios(orden);
-				
-				// Agregar facturación del viaje (suma de precios de tramos)
-				double precioViaje = calcularPrecioViaje(viaje);
 				factura.agregarItem("Costo del viaje", precioViaje);
-				
-				consignee.enviarFactura(factura);
-			}
-		}
+				orden.getCliente().enviarFactura(factura);
+			});
 	}
 	
 	/**
@@ -308,10 +289,11 @@ public class TerminalGestionada implements BuqueObserver, Visitable {
 		Factura factura = new Factura(orden.getCliente());
 		
 		// Agregar cada servicio como item de factura
-		for (Servicio servicio : orden.serviciosContratados()) {
-			double costo = servicio.calcularCosto(orden);
-			factura.agregarItem(servicio.getClass().getSimpleName(), costo);
-		}
+		orden.serviciosContratados().stream()
+			.forEach(servicio -> {
+				double costo = servicio.calcularCosto(orden);
+				factura.agregarItem(servicio.getClass().getSimpleName(), costo);
+			});
 		
 		return factura;
 	}

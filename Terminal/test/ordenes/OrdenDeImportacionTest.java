@@ -8,9 +8,9 @@ import java.util.*;
 
 import org.junit.jupiter.api.*;
 
-import actores.Camion;
-import actores.Conductor;
-import actores.Consignee;
+import entidades.Camion;
+import entidades.Cliente;
+import entidades.Conductor;
 import carga.*;
 import maritimo.TerminalPortuaria;
 import maritimo.Viaje;
@@ -20,7 +20,7 @@ public class OrdenDeImportacionTest {
 	public OrdenDeImportacion ordenDeImportacion;
 	
 	//mock para crear orden de importacion
-	public Consignee mockConsignee;
+	public Cliente mockCliente;
 	public Container mockContainer;
 	public Viaje mockViaje;
 	public Camion mockCamion;
@@ -37,7 +37,7 @@ public class OrdenDeImportacionTest {
 	
 	@BeforeEach
 	public void setUp() {
-		mockConsignee = mock(Consignee.class);
+		mockCliente = mock(Cliente.class);
 		mockContainer = mock(Container.class);
 		mockViaje = mock(Viaje.class);
 		mockCamion = mock(Camion.class);
@@ -52,7 +52,7 @@ public class OrdenDeImportacionTest {
 		
 		when(mockViaje.getFechaLlegada(mockTerminaPortuaria)).thenReturn(fechaLlegadaFicticia);
 		
-		ordenDeImportacion = new OrdenDeImportacion(mockConsignee, mockContainer, mockViaje, mockCamion, mockConductor, mockTerminaPortuaria);
+		ordenDeImportacion = new OrdenDeImportacion(mockCliente, mockContainer, mockViaje, mockCamion, mockConductor, mockTerminaPortuaria);
 		// Set fecha to 10 days before arrival date for testing
 		ordenDeImportacion.setFecha(LocalDate.of(2025, 10, 20));
 	}
@@ -118,7 +118,7 @@ public class OrdenDeImportacionTest {
 	
 	@Test
 	public void getClienteTest() {
-		assertEquals(mockConsignee, ordenDeImportacion.getCliente());
+		assertEquals(mockCliente, ordenDeImportacion.getCliente());
 	}
 	
 	@Test

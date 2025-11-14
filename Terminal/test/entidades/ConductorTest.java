@@ -1,8 +1,10 @@
-package actores;
+package entidades;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+
+import entidades.Conductor;
 
 public class ConductorTest {
 	

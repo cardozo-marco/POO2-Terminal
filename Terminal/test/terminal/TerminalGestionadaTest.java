@@ -12,11 +12,10 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import actores.Camion;
-import actores.Conductor;
-import actores.Consignee;
-import actores.EmpresaTransportista;
-import actores.Shipper;
+import entidades.Camion;
+import entidades.Cliente;
+import entidades.Conductor;
+import entidades.EmpresaTransportista;
 import busqueda.CriterioDeBusqueda;
 import busqueda.CriterioMenorPrecio;
 import busqueda.CriterioMenorTiempo;
@@ -338,10 +337,10 @@ public class TerminalGestionadaTest {
 	
 	@Test
 	public void testRegistrarCliente_AgregaClienteALaLista() {
-		Shipper shipper = new Shipper("Test Shipper", "test@test.com");
-		terminalGestionada.registrarCliente(shipper);
+		Cliente cliente = new Cliente("Test Cliente", "test@test.com");
+		terminalGestionada.registrarCliente(cliente);
 		// Verificamos que no lance excepción (el método existe y funciona)
-		assertDoesNotThrow(() -> terminalGestionada.registrarCliente(shipper));
+		assertDoesNotThrow(() -> terminalGestionada.registrarCliente(cliente));
 	}
 	
 	@Test
@@ -356,22 +355,22 @@ public class TerminalGestionadaTest {
 	
 	@Test
 	public void testCrearOrdenExportacion_CreaYAgregaOrden() {
-		Shipper shipper = new Shipper("Test Shipper", "test@test.com");
+		Cliente cliente = new Cliente("Test Cliente", "test@test.com");
 		Camion camion = new Camion("ABC123");
 		Conductor conductor = new Conductor("Juan", "12345678");
 		Container container = new Dry("CONT1", 2, 2, 2, 1000, new BLSimple("producto", 500));
 		
 		OrdenDeExportacion orden = terminalGestionada.crearOrdenExportacion(
-			shipper, mockViaje1, container, camion, conductor);
+			cliente, mockViaje1, container, camion, conductor);
 		
 		assertNotNull(orden);
 		assertTrue(terminalGestionada.getOrdenes().contains(orden));
-		assertEquals(shipper, orden.getCliente());
+		assertEquals(cliente, orden.getCliente());
 	}
 	
 	@Test
 	public void testCrearOrdenImportacion_CreaYAgregaOrdenYNotifica() {
-		Consignee consignee = new Consignee("Test Consignee", "test@test.com");
+		Cliente cliente = new Cliente("Test Cliente", "test@test.com");
 		Camion camion = new Camion("ABC123");
 		Conductor conductor = new Conductor("Juan", "12345678");
 		Container container = new Dry("CONT1", 2, 2, 2, 1000, new BLSimple("producto", 500));
@@ -382,12 +381,12 @@ public class TerminalGestionadaTest {
 		Viaje viaje = new Viaje(circuito, null, LocalDateTime.now());
 		
 		OrdenDeImportacion orden = terminalGestionada.crearOrdenImportacion(
-			consignee, viaje, container, camion, conductor);
+			cliente, viaje, container, camion, conductor);
 		
 		assertNotNull(orden);
 		assertTrue(terminalGestionada.getOrdenes().contains(orden));
-		assertEquals(1, consignee.getNotificacionesRecibidas().size());
-		assertTrue(consignee.getNotificacionesRecibidas().get(0).contains("llegará"));
+		assertEquals(1, cliente.getNotificacionesRecibidas().size());
+		assertTrue(cliente.getNotificacionesRecibidas().get(0).contains("llegará"));
 	}
 	
 	// ========== TESTS RECIBIR CAMION EXPORTACION ==========
@@ -401,10 +400,10 @@ public class TerminalGestionadaTest {
 		empresa.addConductor(conductor);
 		terminalGestionada.registrarTransportista(empresa);
 		
-		Shipper shipper = new Shipper("Test", "test@test.com");
+		Cliente cliente = new Cliente("Test", "test@test.com");
 		Container container = new Dry("CONT1", 2, 2, 2, 1000, new BLSimple("producto", 500));
 		OrdenDeExportacion orden = terminalGestionada.crearOrdenExportacion(
-			shipper, mockViaje1, container, camion, conductor);
+			cliente, mockViaje1, container, camion, conductor);
 		
 		assertDoesNotThrow(() -> terminalGestionada.recibirCamionExportacion(camion, conductor, orden));
 	}
@@ -419,10 +418,10 @@ public class TerminalGestionadaTest {
 		empresa.addConductor(conductor);
 		terminalGestionada.registrarTransportista(empresa);
 		
-		Shipper shipper = new Shipper("Test", "test@test.com");
+		Cliente cliente = new Cliente("Test", "test@test.com");
 		Container container = new Dry("CONT1", 2, 2, 2, 1000, new BLSimple("producto", 500));
 		OrdenDeExportacion orden = terminalGestionada.crearOrdenExportacion(
-			shipper, mockViaje1, container, camionRegistrado, conductor);
+			cliente, mockViaje1, container, camionRegistrado, conductor);
 		
 		assertThrows(RuntimeException.class, () -> 
 			terminalGestionada.recibirCamionExportacion(camionNoRegistrado, conductor, orden));
@@ -438,10 +437,10 @@ public class TerminalGestionadaTest {
 		empresa.addConductor(conductorRegistrado);
 		terminalGestionada.registrarTransportista(empresa);
 		
-		Shipper shipper = new Shipper("Test", "test@test.com");
+		Cliente cliente = new Cliente("Test", "test@test.com");
 		Container container = new Dry("CONT1", 2, 2, 2, 1000, new BLSimple("producto", 500));
 		OrdenDeExportacion orden = terminalGestionada.crearOrdenExportacion(
-			shipper, mockViaje1, container, camion, conductorRegistrado);
+			cliente, mockViaje1, container, camion, conductorRegistrado);
 		
 		assertThrows(RuntimeException.class, () -> 
 			terminalGestionada.recibirCamionExportacion(camion, conductorNoRegistrado, orden));
@@ -458,10 +457,10 @@ public class TerminalGestionadaTest {
 		empresa.addConductor(conductor);
 		terminalGestionada.registrarTransportista(empresa);
 		
-		Shipper shipper = new Shipper("Test", "test@test.com");
+		Cliente cliente = new Cliente("Test", "test@test.com");
 		Container container = new Dry("CONT1", 2, 2, 2, 1000, new BLSimple("producto", 500));
 		OrdenDeExportacion orden = terminalGestionada.crearOrdenExportacion(
-			shipper, mockViaje1, container, camionOrden, conductor);
+			cliente, mockViaje1, container, camionOrden, conductor);
 		
 		assertThrows(RuntimeException.class, () -> 
 			terminalGestionada.recibirCamionExportacion(camionDiferente, conductor, orden));
@@ -478,14 +477,14 @@ public class TerminalGestionadaTest {
 		empresa.addConductor(conductor);
 		terminalGestionada.registrarTransportista(empresa);
 		
-		Consignee consignee = new Consignee("Test", "test@test.com");
+		Cliente cliente = new Cliente("Test", "test@test.com");
 		Container container = new Dry("CONT1", 2, 2, 2, 1000, new BLSimple("producto", 500));
 		PosicionGPS pos = new PosicionGPS(0, 0);
 		Tramo tramo = new Tramo(mockTerminal, mockTerminal, 5, 50);
 		CircuitoMaritimo circuito = new CircuitoMaritimo(Arrays.asList(tramo));
 		Viaje viaje = new Viaje(circuito, null, LocalDateTime.now());
 		OrdenDeImportacion orden = terminalGestionada.crearOrdenImportacion(
-			consignee, viaje, container, camion, conductor);
+			cliente, viaje, container, camion, conductor);
 		
 		assertDoesNotThrow(() -> terminalGestionada.recibirCamionImportacion(camion, conductor, orden));
 	}
@@ -499,14 +498,14 @@ public class TerminalGestionadaTest {
 		empresa.addConductor(conductor);
 		terminalGestionada.registrarTransportista(empresa);
 		
-		Consignee consignee = new Consignee("Test", "test@test.com");
+		Cliente cliente = new Cliente("Test", "test@test.com");
 		Container container = new Dry("CONT1", 2, 2, 2, 1000, new BLSimple("producto", 500));
 		PosicionGPS pos = new PosicionGPS(0, 0);
 		Tramo tramo = new Tramo(mockTerminal, mockTerminal, 5, 50);
 		CircuitoMaritimo circuito = new CircuitoMaritimo(Arrays.asList(tramo));
 		Viaje viaje = new Viaje(circuito, null, LocalDateTime.now().minusDays(2));
 		OrdenDeImportacion orden = terminalGestionada.crearOrdenImportacion(
-			consignee, viaje, container, camion, conductor);
+			cliente, viaje, container, camion, conductor);
 		
 		terminalGestionada.recibirCamionImportacion(camion, conductor, orden);
 		
@@ -523,14 +522,14 @@ public class TerminalGestionadaTest {
 		empresa.addConductor(conductor);
 		terminalGestionada.registrarTransportista(empresa);
 		
-		Consignee consignee = new Consignee("Test", "test@test.com");
+		Cliente cliente = new Cliente("Test", "test@test.com");
 		Container container = new Dry("CONT1", 2, 2, 2, 1000, new BLSimple("producto", 500));
 		PosicionGPS pos = new PosicionGPS(0, 0);
 		Tramo tramo = new Tramo(mockTerminal, mockTerminal, 5, 50);
 		CircuitoMaritimo circuito = new CircuitoMaritimo(Arrays.asList(tramo));
 		Viaje viaje = new Viaje(circuito, null, LocalDateTime.now().minusHours(12));
 		OrdenDeImportacion orden = terminalGestionada.crearOrdenImportacion(
-			consignee, viaje, container, camion, conductor);
+			cliente, viaje, container, camion, conductor);
 		
 		int serviciosAntes = orden.serviciosContratados().size();
 		terminalGestionada.recibirCamionImportacion(camion, conductor, orden);
@@ -542,38 +541,38 @@ public class TerminalGestionadaTest {
 	// ========== TESTS UPDATE (OBSERVER) ==========
 	
 	@Test
-	public void testUpdate_BuqueInboundLlegandoATerminal_NotificaConsignees() {
-		Consignee consignee = new Consignee("Test", "test@test.com");
+	public void testUpdate_BuqueInboundLlegandoATerminal_NotificaClientes() {
+		Cliente cliente = new Cliente("Test", "test@test.com");
 		Container container = new Dry("CONT1", 2, 2, 2, 1000, new BLSimple("producto", 500));
 		PosicionGPS pos = new PosicionGPS(0, 0);
 		Tramo tramo = new Tramo(mockTerminal, mockTerminal, 5, 50);
 		CircuitoMaritimo circuito = new CircuitoMaritimo(Arrays.asList(tramo));
 		Viaje viaje = new Viaje(circuito, null, LocalDateTime.now());
 		OrdenDeImportacion orden = terminalGestionada.crearOrdenImportacion(
-			consignee, viaje, container, new Camion("ABC"), new Conductor("Juan", "123"));
+			cliente, viaje, container, new Camion("ABC"), new Conductor("Juan", "123"));
 		
 		Buque buque = new Buque(viaje, pos, "test");
 		buque.addObserver(terminalGestionada);
 		buque.setFase(new maritimo.Inbound());
 		
-		assertTrue(consignee.getNotificacionesRecibidas().stream()
+		assertTrue(cliente.getNotificacionesRecibidas().stream()
 			.anyMatch(n -> n.contains("llegando")));
 	}
 	
 	@Test
-	public void testUpdate_BuqueDepartingDesdeTerminal_NotificaShippers() {
+	public void testUpdate_BuqueDepartingDesdeTerminal_NotificaClientes() {
 		// Nota: Departing no implementa esDeparting() en el código fuente,
 		// por lo que la notificación específica en fase Departing no se ejecuta.
 		// Este test verifica que cuando el buque pasa a Outbound (después de Departing),
 		// el sistema funciona correctamente y se factura.
-		Shipper shipper = new Shipper("Test", "test@test.com");
+		Cliente cliente = new Cliente("Test", "test@test.com");
 		Container container = new Dry("CONT1", 2, 2, 2, 1000, new BLSimple("producto", 500));
 		TerminalPortuaria otroPuerto = new TerminalPortuaria("Otro", new PosicionGPS(200, 200));
 		Tramo tramo = new Tramo(mockTerminal, otroPuerto, 5, 50);
 		CircuitoMaritimo circuito = new CircuitoMaritimo(Arrays.asList(tramo));
 		Viaje viaje = new Viaje(circuito, null, LocalDateTime.now());
 		OrdenDeExportacion orden = terminalGestionada.crearOrdenExportacion(
-			shipper, viaje, container, new Camion("ABC"), new Conductor("Juan", "123"));
+			cliente, viaje, container, new Camion("ABC"), new Conductor("Juan", "123"));
 		
 		// Simulamos el flujo: Departing -> Outbound (lejos de terminal)
 		PosicionGPS posLejos = new PosicionGPS(100, 100);
@@ -587,31 +586,31 @@ public class TerminalGestionadaTest {
 		buque.setFase(new maritimo.Outbound());
 		
 		// Verificamos que el flujo completo funciona: se factura correctamente
-		assertTrue(shipper.getFacturasRecibidas().size() > 0);
+		assertTrue(cliente.getFacturasRecibidas().size() > 0);
 	}
 	
 	@Test
 	public void testUpdate_BuqueOutboundLejosDeTerminal_FacturaOrdenes() {
-		Shipper shipper = new Shipper("Test", "test@test.com");
+		Cliente cliente = new Cliente("Test", "test@test.com");
 		Container container = new Dry("CONT1", 2, 2, 2, 1000, new BLSimple("producto", 500));
 		PosicionGPS posLejos = new PosicionGPS(100, 100);
 		Tramo tramo = new Tramo(mockTerminal, mockTerminal, 5, 50);
 		CircuitoMaritimo circuito = new CircuitoMaritimo(Arrays.asList(tramo));
 		Viaje viaje = new Viaje(circuito, null, LocalDateTime.now());
 		OrdenDeExportacion orden = terminalGestionada.crearOrdenExportacion(
-			shipper, viaje, container, new Camion("ABC"), new Conductor("Juan", "123"));
+			cliente, viaje, container, new Camion("ABC"), new Conductor("Juan", "123"));
 		
 		Buque buque = new Buque(viaje, posLejos, "test");
 		buque.setPosicionActual(posLejos);
 		buque.addObserver(terminalGestionada);
 		buque.setFase(new maritimo.Outbound());
 		
-		assertTrue(shipper.getFacturasRecibidas().size() > 0);
+		assertTrue(cliente.getFacturasRecibidas().size() > 0);
 	}
 	
 	@Test
 	public void testUpdate_BuqueOutboundImportacion_FacturaConCostoViaje() {
-		Consignee consignee = new Consignee("Test", "test@test.com");
+		Cliente cliente = new Cliente("Test", "test@test.com");
 		Container container = new Dry("CONT1", 2, 2, 2, 1000, new BLSimple("producto", 500));
 		PosicionGPS posLejos = new PosicionGPS(100, 100);
 		// El viaje debe tener como destino la terminal gestionada para que se facture
@@ -620,15 +619,15 @@ public class TerminalGestionadaTest {
 		CircuitoMaritimo circuito = new CircuitoMaritimo(Arrays.asList(tramo));
 		Viaje viaje = new Viaje(circuito, null, LocalDateTime.now());
 		OrdenDeImportacion orden = terminalGestionada.crearOrdenImportacion(
-			consignee, viaje, container, new Camion("ABC"), new Conductor("Juan", "123"));
+			cliente, viaje, container, new Camion("ABC"), new Conductor("Juan", "123"));
 		
 		Buque buque = new Buque(viaje, posLejos, "test");
 		buque.setPosicionActual(posLejos);
 		buque.addObserver(terminalGestionada);
 		buque.setFase(new maritimo.Outbound());
 		
-		assertTrue(consignee.getFacturasRecibidas().size() > 0);
-		Factura factura = consignee.getFacturasRecibidas().get(0);
+		assertTrue(cliente.getFacturasRecibidas().size() > 0);
+		Factura factura = cliente.getFacturasRecibidas().get(0);
 		// El código usa "Costo del viaje" (con mayúscula)
 		assertTrue(factura.getItems().stream()
 			.anyMatch(item -> item.getDescripcion().contains("Costo del viaje") || 
@@ -663,10 +662,10 @@ public class TerminalGestionadaTest {
 	
 	@Test
 	public void testGetOrdenes_RetornaListaCorrecta() {
-		Shipper shipper = new Shipper("Test", "test@test.com");
+		Cliente cliente = new Cliente("Test", "test@test.com");
 		Container container = new Dry("CONT1", 2, 2, 2, 1000, new BLSimple("producto", 500));
 		OrdenDeExportacion orden = terminalGestionada.crearOrdenExportacion(
-			shipper, mockViaje1, container, new Camion("ABC"), new Conductor("Juan", "123"));
+			cliente, mockViaje1, container, new Camion("ABC"), new Conductor("Juan", "123"));
 		
 		List<Orden> ordenes = terminalGestionada.getOrdenes();
 		assertTrue(ordenes.contains(orden));

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import actores.Cliente;
+import entidades.Cliente;
 
 public class Factura {
 	private Cliente cliente;

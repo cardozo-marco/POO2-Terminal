@@ -1,4 +1,4 @@
-package actores;
+package entidades;
 
 public class Camion {
 	private String patente;

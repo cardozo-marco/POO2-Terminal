@@ -1,4 +1,4 @@
-package actores;
+package entidades;
 
 public class Conductor {
 	private String nombre;

@@ -1,9 +1,13 @@
-package actores;
+package entidades;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import entidades.Camion;
+import entidades.Conductor;
+import entidades.EmpresaTransportista;
 
 public class EmpresaTransportistaTest {
 	

@@ -3,9 +3,9 @@ package ordenes;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 
-import actores.Camion;
-import actores.Consignee;
-import actores.Conductor;
+import entidades.Camion;
+import entidades.Cliente;
+import entidades.Conductor;
 import carga.*;
 import maritimo.TerminalPortuaria;
 import maritimo.Viaje;
@@ -14,9 +14,9 @@ import reportes.*;
 public class OrdenDeImportacion extends Orden implements Visitable{
 	private LocalDateTime fechaLlegadaCarga;
 
-	public OrdenDeImportacion(Consignee consignee, Container carga, Viaje viaje, Camion camion, Conductor conductor,
+	public OrdenDeImportacion(Cliente cliente, Container carga, Viaje viaje, Camion camion, Conductor conductor,
 			TerminalPortuaria terminal) {
-		super(consignee, carga, viaje, camion, conductor, terminal);
+		super(cliente, carga, viaje, camion, conductor, terminal);
 		this.fechaLlegadaCarga = viaje.getFechaLlegada(terminal);
 	}
 	

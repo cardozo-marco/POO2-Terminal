@@ -4,10 +4,10 @@ import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import actores.Camion;
-import actores.Cliente;
-import actores.Conductor;
 import carga.*;
+import entidades.Camion;
+import entidades.Cliente;
+import entidades.Conductor;
 import maritimo.TerminalPortuaria;
 import maritimo.Viaje;
 import reportes.*;

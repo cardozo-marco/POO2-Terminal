@@ -8,16 +8,16 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import actores.Shipper;
+import entidades.Cliente;
 
 public class FacturaTest {
 	
-	private Shipper cliente;
+	private Cliente cliente;
 	private Factura factura;
 	
 	@BeforeEach
 	public void setUp() {
-		cliente = new Shipper("Juan Pérez", "juan@example.com");
+		cliente = new Cliente("Juan Pérez", "juan@example.com");
 		factura = new Factura(cliente);
 	}
 	

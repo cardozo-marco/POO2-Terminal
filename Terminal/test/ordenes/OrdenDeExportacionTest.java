@@ -8,9 +8,9 @@ import java.util.*;
 
 import org.junit.jupiter.api.*;
 
-import actores.Camion;
-import actores.Conductor;
-import actores.Shipper;
+import entidades.Camion;
+import entidades.Cliente;
+import entidades.Conductor;
 import carga.*;
 import maritimo.TerminalPortuaria;
 import maritimo.Viaje;
@@ -19,7 +19,7 @@ import servicios.*;
 public class OrdenDeExportacionTest {
 	public OrdenDeExportacion ordenDeExportacion;
 	
-	public Shipper mockShipper;
+	public Cliente mockCliente;
 	public Container mockContainer;
 	public Viaje mockViaje;
 	public Camion mockCamion;
@@ -33,7 +33,7 @@ public class OrdenDeExportacionTest {
 	
 	@BeforeEach
 	public void setUp() {
-		mockShipper = mock(Shipper.class);
+		mockCliente = mock(Cliente.class);
 		mockContainer = mock(Container.class);
 		mockViaje = mock(Viaje.class);
 		mockCamion = mock(Camion.class);
@@ -45,7 +45,7 @@ public class OrdenDeExportacionTest {
 		
 		turnoFicticio = LocalDateTime.of(2025, 10, 23, 18, 0);
 		
-		ordenDeExportacion = new OrdenDeExportacion(mockShipper, mockContainer, mockViaje, mockCamion, mockConductor, mockTerminalPortuaria);
+		ordenDeExportacion = new OrdenDeExportacion(mockCliente, mockContainer, mockViaje, mockCamion, mockConductor, mockTerminalPortuaria);
 	}
 	
 	@Test
@@ -107,7 +107,7 @@ public class OrdenDeExportacionTest {
 	
 	@Test
 	public void getClienteTest() {
-		assertEquals(mockShipper, ordenDeExportacion.getCliente());
+		assertEquals(mockCliente, ordenDeExportacion.getCliente());
 	}
 	
 	@Test
