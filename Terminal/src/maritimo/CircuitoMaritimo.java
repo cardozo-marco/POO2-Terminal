@@ -1,6 +1,5 @@
 package maritimo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CircuitoMaritimo {
@@ -19,27 +18,11 @@ public class CircuitoMaritimo {
 	}
 	
 	public List<TerminalPortuaria> getTerminalesIntermedias(TerminalPortuaria origen, TerminalPortuaria destino){
-		List<TerminalPortuaria> intermedias = new ArrayList<>();
-	    boolean started = false;
-
-	    for (Tramo tramo : tramos) {
-	        if (!started) {// si todavía no se encontro la terminal de origen sigue buscando
-	            if (tramo.getOrigen().equals(origen)) {
-	                started = true;// empieza a contar
-	                if (tramo.getDestino().equals(destino)) {
-	                    break;// no sigue recorriendo si esta en el destino final
-	                }
-	                intermedias.add(tramo.getDestino());
-	            }
-	        } else {
-	            if (tramo.getDestino().equals(destino)) {
-	                break;// no sigue recorriendo si esta en el destino final
-	            } else {
-	                intermedias.add(tramo.getDestino());
-	            }
-	        }
-	    }
-	    return intermedias;
+		return tramos.stream()
+		        .dropWhile(t -> !t.getOrigen().equals(origen))
+		        .takeWhile(t -> !t.getDestino().equals(destino))
+		        .map(Tramo::getDestino)
+		        .toList();
 	}
 	
 	public List<Tramo> getTramos() {
@@ -47,49 +30,16 @@ public class CircuitoMaritimo {
 	}
 
 	public int cantidadTerminalesEntre(TerminalPortuaria origen, TerminalPortuaria destino) {
-		int contador = 0;
-	    boolean started = false;
-
-	    for (Tramo tramo : tramos) {
-	        if (!started) {// si todavía no se encontro la terminal de origen sigue buscando
-	            if (tramo.getOrigen().equals(origen)) {
-	                started = true;// empieza a contar
-	                // Si el destino del primer tramo es distinto del destino final se cuenta
-	                if (!tramo.getDestino().equals(destino)) {
-	                    contador++;
-	                } else {
-	                    break; // no sigue recorriendo si esta en el destino final
-	                }
-	            }
-	        } else {
-	            if (tramo.getDestino().equals(destino)) {
-	                break; // no sigue recorriendo si esta en el destino final
-	            } else {
-	                contador++;
-	            }
-	        }
-	    }
-
-	    return contador;
+		return (int )tramos.stream()
+		        .dropWhile(t -> !t.getOrigen().equals(origen))
+		        .takeWhile(t -> !t.getDestino().equals(destino))
+		        .count();
 	}
 
 	public boolean contieneTerminales(TerminalPortuaria origen, TerminalPortuaria destino) {
-		boolean started = false;
-		for (Tramo tramo : tramos) {
-		    if (!started) {// si todavía no se encontro la terminal de origen sigue buscando
-		        if (tramo.getOrigen().equals(origen)) {
-		            started = true;
-		            if (tramo.getDestino().equals(destino)) {
-		                return true;// si esta en el destino final, existe ambos terminales
-		            }
-		        }
-		    } else {
-		        if (tramo.getDestino().equals(destino)) {
-		            return true;// si esta en el destino final, existe ambos terminales
-		        }
-		    }
-		}
-		return false;
+		return tramos.stream()
+		        .dropWhile(t -> !t.getOrigen().equals(origen))
+		        .anyMatch(t -> t.getDestino().equals(destino));
 	}
 
 	public double precioEntreTerminales(TerminalPortuaria origen, TerminalPortuaria destino) {
@@ -103,7 +53,7 @@ public class CircuitoMaritimo {
 	                if (tramo.getDestino().equals(destino)) {// si el destino del primer tramo ya es el destino final, sumamos y salimos
 	                    precioTotal += tramo.getPrecio();
 	                    break;
-	                } else {
+	                } else {//sino suma el precio del tramo
 	                    precioTotal += tramo.getPrecio();
 	                }
 	            }
@@ -129,7 +79,7 @@ public class CircuitoMaritimo {
 	                if (tramo.getDestino().equals(destino)) {// si el destino del primer tramo ya es el destino final, sumamos y salimos
 	                	tiempoTotal += tramo.getTiempo();
 	                    break;
-	                } else {
+	                } else {//sino suma el tiempo del tramo
 	                	tiempoTotal += tramo.getTiempo();
 	                }
 	            }
