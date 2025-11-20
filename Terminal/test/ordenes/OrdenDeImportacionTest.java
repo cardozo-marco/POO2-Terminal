@@ -21,7 +21,7 @@ public class OrdenDeImportacionTest {
 	
 	//mock para crear orden de importacion
 	public Cliente mockCliente;
-	public Container mockContainer;
+	public Container mockReefer;
 	public Viaje mockViaje;
 	public Camion mockCamion;
 	public Conductor mockConductor;
@@ -38,7 +38,7 @@ public class OrdenDeImportacionTest {
 	@BeforeEach
 	public void setUp() {
 		mockCliente = mock(Cliente.class);
-		mockContainer = mock(Container.class);
+		mockReefer = mock(Reefer.class);
 		mockViaje = mock(Viaje.class);
 		mockCamion = mock(Camion.class);
 		mockConductor = mock(Conductor.class);
@@ -52,9 +52,11 @@ public class OrdenDeImportacionTest {
 		
 		when(mockViaje.getFechaLlegada(mockTerminaPortuaria)).thenReturn(fechaLlegadaFicticia);
 		
-		ordenDeImportacion = new OrdenDeImportacion(mockCliente, mockContainer, mockViaje, mockCamion, mockConductor, mockTerminaPortuaria);
+		ordenDeImportacion = new OrdenDeImportacion(mockCliente, mockReefer, mockViaje, mockCamion, mockConductor, mockTerminaPortuaria);
 		// Set fecha to 10 days before arrival date for testing
 		ordenDeImportacion.setFecha(LocalDate.of(2025, 10, 20));
+		
+		when(mockReefer.aceptaServicio(any(Servicio.class))).thenReturn(true);
 	}
 	
 	@Test
@@ -102,13 +104,13 @@ public class OrdenDeImportacionTest {
 	
 	@Test
 	public void getVolumenTest() {
-		when(mockContainer.getVolumen()).thenReturn(80.0);
+		when(mockReefer.getVolumen()).thenReturn(80.0);
 		assertEquals(80.0, ordenDeImportacion.getVolumen());
 	}
 	
 	@Test
 	public void getContainerTest() {
-		assertEquals(mockContainer, ordenDeImportacion.getContainer());
+		assertEquals(mockReefer, ordenDeImportacion.getContainer());
 	}
 	
 	@Test
@@ -141,4 +143,3 @@ public class OrdenDeImportacionTest {
 		assertFalse(ordenDeImportacion.esOrdenDeExportacion());
 	}
 }
-

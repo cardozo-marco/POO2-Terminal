@@ -2,12 +2,16 @@ package servicios;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.EnumSet;
+import java.util.Set;
 
 import ordenes.Orden;
 import ordenes.OrdenDeImportacion;
 
 public class ServicioAlmacenamientoExcedente implements Servicio{
 	private double costoPorDia;
+	
+	private Set<Compatibilidad> compatibilidades = EnumSet.of(Compatibilidad.DRY, Compatibilidad.REEFER, Compatibilidad.TANQUE);
 
 	@Override
 	public double calcularCosto(Orden orden) {
@@ -41,5 +45,9 @@ public class ServicioAlmacenamientoExcedente implements Servicio{
 	public ServicioAlmacenamientoExcedente(double costoPorDia) {
 		this.costoPorDia = costoPorDia;
 	}
-	
+
+	@Override
+	public Set<Compatibilidad> getCompatibilidades() {
+		return this.compatibilidades;
+	}
 }

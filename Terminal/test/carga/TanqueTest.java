@@ -11,8 +11,8 @@ import reportes.Visitor;
 public class TanqueTest {
 	
 	private Tanque tanque;
-	private BillOfLanding carga;
-	
+	private BLSimple carga;
+
 	@BeforeEach
 	public void setUp() {
 		carga = new BLSimple("liquido", 8000);

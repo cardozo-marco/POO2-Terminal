@@ -18,3 +18,4 @@ public class BLCompuesto implements BillOfLanding{
 		return pesoTotal;
 	}
 }
+

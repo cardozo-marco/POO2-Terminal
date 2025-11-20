@@ -31,7 +31,16 @@ public abstract class Orden implements Visitable{
 	protected List<Servicio> serviciosContratados = new ArrayList<>();
 	
 	public void agregarServicio(Servicio servicio) {
-		this.serviciosContratados.add(servicio);
+		if(this.esServicioCompatible(servicio)) {
+			this.serviciosContratados.add(servicio);
+		}
+		else {
+			System.out.println("Servicio no compatible");
+		}
+	}
+	
+	protected boolean esServicioCompatible(Servicio servicio) {
+		return this.carga.aceptaServicio(servicio);
 	}
 	
 	public double calcularCostoTotalServicios() {

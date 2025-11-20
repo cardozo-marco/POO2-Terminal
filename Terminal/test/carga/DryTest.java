@@ -3,6 +3,8 @@ package carga;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,11 +13,20 @@ import reportes.Visitor;
 public class DryTest {
 	
 	private Dry dry;
-	private BillOfLanding carga;
+	private BLCompuesto carga;
+	
+	private BLSimple carga1;
+	private BLSimple carga2;
 	
 	@BeforeEach
 	public void setUp() {
-		carga = new BLSimple("producto", 5000);
+		carga1 = new BLSimple("producto1", 500);
+		carga2 = new BLSimple("producto2", 4500);
+		
+		carga = new BLCompuesto();
+		carga.agregarProducto(carga1);
+		carga.agregarProducto(carga2);
+		
 		dry = new Dry("DRY001", 2.4, 6.0, 2.6, 10000, carga);
 	}
 	
@@ -56,6 +67,11 @@ public class DryTest {
 	public void getVolumenConDimensionesCeroTest() {
 		Dry dryCero = new Dry("DRY000", 0, 0, 0, 0, carga);
 		assertEquals(0.0, dryCero.getVolumen());
+	}
+	
+	@Test
+	public void getCarga() {
+		assertEquals(carga, dry.getCarga());
 	}
 }
 

@@ -1,5 +1,8 @@
 package servicios;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 import ordenes.Orden;
 
 public class ServicioLavado implements Servicio{
@@ -8,6 +11,8 @@ public class ServicioLavado implements Servicio{
 	private double costoVolMayor;
 	
 	private double limiteVolumen = 70.0;
+	
+	private Set<Compatibilidad> compatibiliades = EnumSet.of(Compatibilidad.DRY, Compatibilidad.REEFER, Compatibilidad.TANQUE);
 
 	@Override
 	public double calcularCosto(Orden orden) {
@@ -23,7 +28,9 @@ public class ServicioLavado implements Servicio{
 		this.costoVolMenor = costoVolMenor;
 		this.costoVolMayor = costoVolMayor;
 	}
-	
+
+	@Override
+	public Set<Compatibilidad> getCompatibilidades() {
+		return this.compatibiliades;
+	}
 }
-
-

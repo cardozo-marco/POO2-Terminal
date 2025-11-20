@@ -20,7 +20,7 @@ public class OrdenDeExportacionTest {
 	public OrdenDeExportacion ordenDeExportacion;
 	
 	public Cliente mockCliente;
-	public Container mockContainer;
+	public Reefer mockReefer;
 	public Viaje mockViaje;
 	public Camion mockCamion;
 	public Conductor mockConductor;
@@ -34,7 +34,7 @@ public class OrdenDeExportacionTest {
 	@BeforeEach
 	public void setUp() {
 		mockCliente = mock(Cliente.class);
-		mockContainer = mock(Container.class);
+		mockReefer = mock(Reefer.class);
 		mockViaje = mock(Viaje.class);
 		mockCamion = mock(Camion.class);
 		mockConductor = mock(Conductor.class);
@@ -45,7 +45,9 @@ public class OrdenDeExportacionTest {
 		
 		turnoFicticio = LocalDateTime.of(2025, 10, 23, 18, 0);
 		
-		ordenDeExportacion = new OrdenDeExportacion(mockCliente, mockContainer, mockViaje, mockCamion, mockConductor, mockTerminalPortuaria);
+		ordenDeExportacion = new OrdenDeExportacion(mockCliente, mockReefer, mockViaje, mockCamion, mockConductor, mockTerminalPortuaria);
+		
+		when(mockReefer.aceptaServicio(any(Servicio.class))).thenReturn(true);
 	}
 	
 	@Test
@@ -91,13 +93,13 @@ public class OrdenDeExportacionTest {
 	
 	@Test
 	public void getVolumenTest() {
-		when(mockContainer.getVolumen()).thenReturn(80.0);
+		when(mockReefer.getVolumen()).thenReturn(80.0);
 		assertEquals(80.0, ordenDeExportacion.getVolumen());
 	}
 	
 	@Test
 	public void getContainerTest() {
-		assertEquals(mockContainer, ordenDeExportacion.getContainer());
+		assertEquals(mockReefer, ordenDeExportacion.getContainer());
 	}
 	
 	@Test
@@ -130,3 +132,4 @@ public class OrdenDeExportacionTest {
 		assertFalse(ordenDeExportacion.esOrdenDeImportacion());
 	}
 }
+

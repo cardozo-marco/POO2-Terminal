@@ -19,7 +19,7 @@ public class BLCompuestoTest {
 		cajas = new BLSimple("cajas", 4000);
 		sillas = new BLSimple("sillas", 2000);
 	}
-	
+
 	@Test
 	public void obtenerPeso() {
 		//verifico que el peso sea 0 ya que su lista esta vacia
